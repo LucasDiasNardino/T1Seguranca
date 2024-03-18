@@ -1,8 +1,6 @@
 import os
 
-arquivo = 'arqCifradoEN'
-
-def freq(arquivo, debug):
+def freq(arquivo, debug=False):
 
     try:
         with open(arquivo+".txt", 'r') as f:
@@ -41,7 +39,3 @@ def freq(arquivo, debug):
     except IOError as e:
         print(f'Erro ao abrir o arquivo {arquivo}: {e}')
         exit()
-
-
-        
-print(freq(arquivo, False))
