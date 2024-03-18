@@ -32,4 +32,4 @@ Descobrir a chave
 
 
 ### Arquivos Auxiliares
-Neste [link](https://en.wikipedia.org/wiki/Letter_frequency.), temos um arquivo com frequência de letras em português/Inglês
+Neste [link](https://en.wikipedia.org/wiki/Letter_frequency), temos um arquivo com frequência de letras em português/Inglês

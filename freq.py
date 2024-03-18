@@ -1,6 +1,6 @@
 import os
 
-def freq(arquivo, debug=False):
+def ic(arquivo,debug=False):
 
     try:
         with open(arquivo+".txt", 'r') as f:
