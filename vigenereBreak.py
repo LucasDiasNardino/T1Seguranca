@@ -1,5 +1,7 @@
 import freq
 
+
+
 def breakVigenere(ciphertext, min_key_length=1,):
     """
     Break Vigenère cipher using Index of Coincidence (IC).
@@ -7,21 +9,19 @@ def breakVigenere(ciphertext, min_key_length=1,):
     print("Iniciando quebra de chave")
     best_ic = 0
     best_key_length = 1
-    max_key_length = len(ciphertext) 
-    for key_length in range(min_key_length, max_key_length + 1):
-        print(f"Calculando IC para chave de tamanho {key_length}")
-        groups = ['' for _ in range(key_length)]
-        print(f"Dividindo texto em {key_length} grupos")
-        
-        for i, char in enumerate(ciphertext):
-            print("Grupo sendo analisado: ", groups)
-            groups[i % key_length] += char
-        ic = sum(freq.ic(group) for group in groups) / key_length
-        print(f"IC para chave de tamanho {key_length}: {ic}")
-        if ic > best_ic:
-            best_ic = ic
-            best_key_length = key_length
+    max_key_length = 20
     
+    best_ic = freq.ic(ciphertext)
+    
+    for i in range(min_key_length, max_key_length + 1):
+        substring = [ciphertext[j] for j in range(0, len(ciphertext), i)]
+        ic = freq.ic(''.join(substring))
+        print(f"IC para chave de tamanho {i}: {ic}")
+        if abs(ic - 0.065) < abs(best_ic - 0.065):
+            best_ic = ic
+            best_key_length = i
+        
+
     print(f"Melhor tamanho de chave encontrado: {best_key_length}")
     
     # Split ciphertext into groups based on the guessed key length

@@ -17,7 +17,7 @@ caminho_da_pasta = 'C:\\Users\\lucas\\Desktop\\Facul\\7sem\\seg\\t1\\T1Seguranca
 
 # Verifique se o caminho especificado é de fato uma pasta
 if os.path.isdir(caminho_da_pasta):
-    # Lista todos os arquivos e pastas dentro do caminho especificado
+       # Lista todos os arquivos e pastas dentro do caminho especificado
     arquivos_na_pasta = os.listdir(caminho_da_pasta)
     
     # Itera pelos arquivos na pasta
@@ -29,9 +29,10 @@ if os.path.isdir(caminho_da_pasta):
         if os.path.isfile(caminho_completo):
 
            with open (caminho_completo, 'r') as f:
-               texto = f.read()
+                texto = f.read() 
+                # calcula a frequencia de cada letra do texto
 
-               vigenereBreak.breakVigenere(texto)
+                vigenereBreak.breakVigenere(texto)            
 
 
 else:
