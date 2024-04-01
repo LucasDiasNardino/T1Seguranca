@@ -1,6 +1,6 @@
 import freq
 
-def breakVigenere(ciphertext, min_key_length=1):
+def findKey(ciphertext, min_key_length=1):
     """
     Break Vigenère cipher using Index of Coincidence (IC).
     """
@@ -36,13 +36,42 @@ def breakVigenere(ciphertext, min_key_length=1):
     print("\nCalculando frequência de letras")
     key = ''
     for substring in substrings:
-        print(f"Progresso: {progresso:.2f}%", end='\r', flush=True)
-        freqs = freq.ic(substring, debug=False)  # Adicionado parâmetro debug=False
+        freqs = freq.freqList(substring)  # Adicionado parâmetro debug=False
         if isinstance(freqs, float):  # Verifica se freqs é um float
             print("Erro: Frequência retornou como float.")
+            # convertendo para poder realizar a comparação
+            freqs = [freqs]
+
             continue
         most_common_char_index = freqs.index(max(freqs))
         most_common_char = chr(most_common_char_index + ord('A'))  # Convertendo para caractere
         key += most_common_char
 
     print(f"\nChave encontrada: {key}")
+
+    return key
+
+def breakWithKey(ciphertext, key):
+    """
+    Break Vigenère cipher using a given key.
+    """
+    print("\nIniciando quebra de chave")
+    print(f"Chave fornecida: {key}")
+    print("\nQuebrando texto em substrings")
+    substrings = ['' for _ in range(len(key))]
+    progresso = 0
+    for i, c in enumerate(ciphertext):
+        print(f"Progresso: {progresso:.2f}%", end='\r', flush=True)
+        substrings[i % len(key)] += c
+        progresso = (i + 1) / len(ciphertext) * 100
+
+    print("\nCalculando frequência de letras")
+    plaintext = ''
+    for i, substring in enumerate(substrings):
+        key_char = key[i]
+        key_char_index = ord(key_char) - ord('A')
+        for c in substring:
+            c_index = ord(c) - ord('A')
+            plaintext += chr((c_index - key_char_index) % 26 + ord('A'))
+
+    print(f"Texto decifrado:\n{plaintext}")

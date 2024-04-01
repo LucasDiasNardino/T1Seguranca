@@ -15,9 +15,18 @@ import os
 # Especifique o caminho da pasta que deseja iterar
 caminho_da_pasta = 'C:\\Users\\lucas\\Desktop\\Facul\\7sem\\seg\\t1\\T1Seguranca\\ciphers'
 
+
+with open('C:\\Users\\lucas\\Desktop\\Facul\\7sem\\seg\\t1\\T1Seguranca\\arqCifradoEN.txt', 'r') as f:
+    texto = f.read() 
+    # calcula a frequencia de cada letra do texto
+
+    key = vigenereBreak.findKey(texto)   
+    vigenereBreak.breakWithKey(texto, key)
+
+
 # Verifique se o caminho especificado é de fato uma pasta
 if os.path.isdir(caminho_da_pasta):
-       # Lista todos os arquivos e pastas dentro do caminho especificado
+    # Lista todos os arquivos e pastas dentro do caminho especificado
     arquivos_na_pasta = os.listdir(caminho_da_pasta)
     
     # Itera pelos arquivos na pasta
@@ -32,7 +41,9 @@ if os.path.isdir(caminho_da_pasta):
                 texto = f.read() 
                 # calcula a frequencia de cada letra do texto
 
-                vigenereBreak.breakVigenere(texto)            
+                key = vigenereBreak.findKey(texto)   
+                vigenereBreak.breakWithKey(texto, key)
+                break         
 
 
 else:

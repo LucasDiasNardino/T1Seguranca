@@ -26,3 +26,18 @@ def ic(texto,debug=False):
     # retorna ic com 4 casas decimais
 
     return round(ic, 4)
+
+def freqList(texto):
+    # calcula a frequencia de cada letra do texto
+    freq = {}
+
+    for letra in texto:
+        if letra in freq:
+            freq[letra] += 1
+        else:
+            freq[letra] = 1
+
+    # ordena as letras por frequencia
+    freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+    return freq
