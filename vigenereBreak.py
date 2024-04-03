@@ -4,7 +4,7 @@ def findKey(ciphertext, min_key_length=1):
     """
     Break Vigenère cipher using Index of Coincidence (IC).
     """
-    print("Iniciando quebra de chave")
+    print("Procurando chave")
     best_ic = 0
     best_key_length = 1
     max_key_length = 20
@@ -15,9 +15,11 @@ def findKey(ciphertext, min_key_length=1):
         ic_sum = 0
         for substring in substrings:
             ic_sum += freq.ic(substring, debug=False)  # Adicionado parâmetro debug=False
-        ic = ic_sum / i  # Média das frequências
+        ic = round(ic_sum / i, 3)  # Média das frequências
         print(f"IC para chave de tamanho {i}: {ic}")
-        if abs(ic - 0.065) < abs(best_ic - 0.065):
+        x = abs(ic - 0.072)
+        y = abs(best_ic - 0.072)
+        if x < y:
             best_ic = ic
             best_key_length = i
 
@@ -32,7 +34,10 @@ def findKey(ciphertext, min_key_length=1):
         substrings[i % best_key_length] += c
         progresso = (i + 1) / len(ciphertext) * 100
 
+
     # Calculando frequência de letras e determinando a letra mais frequente para cada substring
+    # com isso, calcular a distância para a mais frequente da cifra
+    # depois, deslocar a distância equivalente para pegar a chave de verdade
     print("\nCalculando frequência de letras")
     key = ''
     for substring in substrings:
@@ -50,28 +55,33 @@ def findKey(ciphertext, min_key_length=1):
     print(f"\nChave encontrada: {key}")
 
     return key
-
 def breakWithKey(ciphertext, key):
     """
     Break Vigenère cipher using a given key.
     """
     print("\nIniciando quebra de chave")
     print(f"Chave fornecida: {key}")
-    print("\nQuebrando texto em substrings")
+    print("\nQuebrando cifra em substrings")
+
+    # Quebrar o texto em substrings de acordo com o tamanho da chave
     substrings = ['' for _ in range(len(key))]
+
     progresso = 0
+    total_chars = len(ciphertext)
     for i, c in enumerate(ciphertext):
-        print(f"Progresso: {progresso:.2f}%", end='\r', flush=True)
+        print(f"Progresso: {progresso / total_chars * 100:.2f}%", end='\r', flush=True)
         substrings[i % len(key)] += c
-        progresso = (i + 1) / len(ciphertext) * 100
+        progresso += 1
 
-    print("\nCalculando frequência de letras")
+    print("\nDescriptografando texto")
+
     plaintext = ''
+    progresso = 0
     for i, substring in enumerate(substrings):
-        key_char = key[i]
-        key_char_index = ord(key_char) - ord('A')
-        for c in substring:
-            c_index = ord(c) - ord('A')
-            plaintext += chr((c_index - key_char_index) % 26 + ord('A'))
+        for j, c in enumerate(substring):
+            plaintext += chr((ord(c) - ord(key[j % len(key)]) + 26) % 26 + ord('A'))
+            progresso += 1
+            print(f"Progresso: {progresso / total_chars * 100:.2f}%", end='\r', flush=True)
 
-    print(f"Texto decifrado:\n{plaintext}")
+    print("\nTexto descriptografado:")
+    print(plaintext)

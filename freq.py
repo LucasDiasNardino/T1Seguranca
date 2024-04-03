@@ -25,7 +25,7 @@ def ic(texto,debug=False):
 
     # retorna ic com 4 casas decimais
 
-    return round(ic, 4)
+    return ic
 
 def freqList(texto):
     # calcula a frequencia de cada letra do texto
