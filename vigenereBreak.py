@@ -8,6 +8,9 @@ def findKey(ciphertext, min_key_length=1):
     best_ic = 0
     best_key_length = 1
     max_key_length = 20
+
+    #var para armazenar char mais frequente no ciphertext
+    most_common_char_ciphertext = freq.freqList(ciphertext)[0][0]
         
     # Descobrindo provável tamanho da chave
     for i in range(min_key_length, max_key_length + 1):
@@ -50,7 +53,14 @@ def findKey(ciphertext, min_key_length=1):
             continue
         most_common_char_index = freqs.index(max(freqs))
         most_common_char = chr(most_common_char_index + ord('A'))  # Convertendo para caractere
-        key += most_common_char
+        
+        # Calculando distância da most_common_char para most_common_char_ciphertext
+        distance = (ord(most_common_char) - ord(most_common_char_ciphertext)) % 26
+
+        # deslocando a distância equivalente para pegar a chave de verdade
+        key += chr((ord('A') + distance) % 26)         
+
+
 
     print(f"\nChave encontrada: {key}")
 
