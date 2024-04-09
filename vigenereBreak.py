@@ -41,30 +41,22 @@ def findKey(ciphertext, min_key_length=1):
     # Calculando frequência de letras e determinando a letra mais frequente para cada substring
     # com isso, calcular a distância para a mais frequente da cifra
     # depois, deslocar a distância equivalente para pegar a chave de verdade
-    print("\nCalculando frequência de letras")
-    key = ''
-    for substring in substrings:
-        freqs = freq.freqList(substring)  # Adicionado parâmetro debug=False
-        if isinstance(freqs, float):  # Verifica se freqs é um float
-            print("Erro: Frequência retornou como float.")
-            # convertendo para poder realizar a comparação
-            freqs = [freqs]
 
-            continue
-        most_common_char_index = freqs.index(max(freqs))
-        most_common_char = chr(most_common_char_index + ord('A'))  # Convertendo para caractere
-        
-        # Calculando distância da most_common_char para most_common_char_ciphertext
-        distance = (ord(most_common_char) - ord(most_common_char_ciphertext)) % 26
 
-        # deslocando a distância equivalente para pegar a chave de verdade
-        key += chr((ord('A') + distance) % 26)         
+    # calculando frequencia de letras das substrings, e determinando a letra mais frequente
+    print("\nCalculando frequência de letras das substrings")
+    most_common_char_substrings = []
+    for i, substring in enumerate(substrings):
+        most_common_char_substrings.append(freq.freqList(substring)[0][0])
+        print(f"Substring {i + 1}: {most_common_char_substrings[-1]}")
+
+    print(most_common_char_substrings)    
 
 
 
-    print(f"\nChave encontrada: {key}")
+    # print(f"\nChave encontrada: {key}")
 
-    return key
+    # return key
 def breakWithKey(ciphertext, key):
     """
     Break Vigenère cipher using a given key.
