@@ -9,9 +9,19 @@ def findKey(ciphertext, min_key_length=1):
     best_key_length = 1
     max_key_length = 20
 
-    #var para armazenar char mais frequente no ciphertext
+    # Frequência de letras no idioma português
+    freq_portuguese = {
+        'a': 0.1463, 'b': 0.0104, 'c': 0.0388, 'd': 0.0499, 'e': 0.1257,
+        'f': 0.0102, 'g': 0.0130, 'h': 0.0077, 'i': 0.0618, 'j': 0.0040,
+        'k': 0.0002, 'l': 0.0278, 'm': 0.0474, 'n': 0.0505, 'o': 0.1073,
+        'p': 0.0252, 'q': 0.0120, 'r': 0.0653, 's': 0.0781, 't': 0.0434,
+        'u': 0.0463, 'v': 0.0167, 'w': 0.0001, 'x': 0.0021, 'y': 0.0001,
+        'z': 0.0047
+    }
+
+    # Var para armazenar char mais frequente no ciphertext
     most_common_char_ciphertext = freq.freqList(ciphertext)[0][0]
-        
+
     # Descobrindo provável tamanho da chave
     for i in range(min_key_length, max_key_length + 1):
         substrings = [ciphertext[j::i] for j in range(i)]  # Dividindo o texto em substrings de acordo com o tamanho da chave
@@ -37,26 +47,29 @@ def findKey(ciphertext, min_key_length=1):
         substrings[i % best_key_length] += c
         progresso = (i + 1) / len(ciphertext) * 100
 
-
     # Calculando frequência de letras e determinando a letra mais frequente para cada substring
-    # com isso, calcular a distância para a mais frequente da cifra
-    # depois, deslocar a distância equivalente para pegar a chave de verdade
+    # Com isso, calcular a distância para a mais frequente da cifra
+    # Depois, deslocar a distância equivalente para pegar a chave de verdade
 
-
-    # calculando frequencia de letras das substrings, e determinando a letra mais frequente
+    # Calculando frequencia de letras das substrings, e determinando a letra mais frequente
     print("\nCalculando frequência de letras das substrings")
     most_common_char_substrings = []
     for i, substring in enumerate(substrings):
         most_common_char_substrings.append(freq.freqList(substring)[0][0])
-        print(f"Substring {i + 1}: {most_common_char_substrings[-1]}")
 
-    print(most_common_char_substrings)    
+    # Concatenando as letras mais frequentes das substrings para formar a chave cifrada
+    chaveCifrada = ''.join(most_common_char_substrings)
+    print("Chave cifrada: ", chaveCifrada)    
 
+    # Decifrar a chave
+    chaveDecifrada = ''
+    for char in chaveCifrada:
+        shift = ord(char) - ord(most_common_char_ciphertext)
+        chaveDecifrada += chr((26 + shift) % 26 + ord('A'))
 
+    print("Chave decifrada: ", chaveDecifrada)
 
-    # print(f"\nChave encontrada: {key}")
-
-    # return key
+    return chaveDecifrada
 def breakWithKey(ciphertext, key):
     """
     Break Vigenère cipher using a given key.
